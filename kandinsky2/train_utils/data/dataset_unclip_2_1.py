@@ -68,6 +68,7 @@ class TextImageDataset(Dataset):
         infinity=False,
     ):
         self.df = pd.read_csv(df_path)
+        print(self.df)
         self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
         self.transform1 = _transform(clip_image_size)
         self.seq_len = seq_len

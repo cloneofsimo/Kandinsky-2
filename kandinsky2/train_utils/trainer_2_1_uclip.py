@@ -76,7 +76,8 @@ def train_unclip(unet, diffusion, image_encoder,
                 lr_scheduler.step()
             train_step += 1
             if train_step % save_every == 0:
-                torch.save(unet.state_dict(), os.path.join(save_path, save_name + str(train_step) + '.ckpt'))
+                torch.save(unet.half().state_dict(), os.path.join(save_path, save_name + str(train_step) + '.ckpt'))
+                unet.float()
             progress.update()
             progress.set_postfix({"loss": loss.item()})
         

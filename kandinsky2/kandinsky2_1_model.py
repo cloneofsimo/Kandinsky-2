@@ -310,6 +310,7 @@ class Kandinsky2_1:
         prior_steps="25",
         negative_prior_prompt="",
         negative_decoder_prompt="",
+        no_img_prior=False,
     ):
         # generate clip embeddings
         image_emb = self.generate_clip_emb(
@@ -331,7 +332,10 @@ class Kandinsky2_1:
             )
 
         image_emb = torch.cat([image_emb, zero_image_emb], dim=0).to(self.device)
-        
+        if no_img_prior:
+            zero_image_emb = self.create_zero_img_emb(batch_size=batch_size)
+            
+            image_emb = torch.cat([zero_image_emb, zero_image_emb], dim=0).to(self.device)
         # load diffusion
         config = deepcopy(self.config)
         if sampler == "p_sampler":
